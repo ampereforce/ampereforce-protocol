@@ -57,7 +57,7 @@ contract UFragmentsPolicy is Ownable {
     uint256 public cryptoWeight;
 
     // CPI value at the time of launch, as an 18 decimal fixed point number.
-    uint256 private baseCpi;
+    uint256 public baseCpi;
 
     // If the current exchange rate is within this fractional distance from the target, no supply
     // update is performed. Fixed point number--same format as the rate.
@@ -289,9 +289,9 @@ contract UFragmentsPolicy is Ownable {
         // deviationThreshold = 0.05e18 = 5e16
         deviationThreshold = 5 * 10 ** (DECIMALS-2);
 
-        rebaseLag = 30;
+        rebaseLag = 5;
         minRebaseTimeIntervalSec = 1 days;
-        rebaseWindowOffsetSec = 72000;  // 8PM UTC
+        rebaseWindowOffsetSec = 7200;  // 2AM UTC
         rebaseWindowLengthSec = 15 minutes;
         lastRebaseTimestampSec = 0;
         epoch = 0;
@@ -315,7 +315,7 @@ contract UFragmentsPolicy is Ownable {
     }
 
     function computeSupplyDelta(uint256 rate, uint256 targetRate, uint256 cryptoRate)
-        private
+        public
         view
         returns (int256)
     {
